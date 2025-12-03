@@ -1,15 +1,31 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+suite('Remove Comments Command Tests', () => {
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-	});
+    test('Should remove comments in a JavaScript document', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: `
+                // comentario 1
+                const x = 10; // comentario inline
+                /* bloque */
+                const y = 20;
+            `,
+            language: 'javascript'
+        });
+
+        await vscode.window.showTextDocument(doc);
+
+        await vscode.commands.executeCommand('comment-editor.removeComments');
+
+        const updatedText = doc.getText();
+
+        assert.ok(!updatedText.includes('// comentario'));
+        assert.ok(!updatedText.includes('/*'));
+        assert.ok(!updatedText.includes('*/'));
+
+        assert.ok(updatedText.includes('const x = 10'));
+        assert.ok(updatedText.includes('const y = 20'));
+    });
+
 });

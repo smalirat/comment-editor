@@ -1,38 +1,42 @@
 {
   "name": "comment-editor",
-  "displayName": "comment-editor",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "Comment Editor",
+  "description": "Remove comments from code using language-aware filters.",
+  "version": "1.0.0",
+  "publisher": "your-name",
   "engines": {
     "vscode": "^1.106.1"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:comment-editor.removeComments"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "comment-editor.helloWorld",
-        "title": "Hello World"
+        "command": "comment-editor.removeComments",
+        "title": "Remove Comments"
       }
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
+    "build": "npm run compile",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "vscode:prepublish": "npm run build",
+    "dev": "npm run watch"
   },
   "devDependencies": {
     "@types/vscode": "^1.106.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "typescript-eslint": "^8.46.3",
     "eslint": "^9.39.1",
+    "typescript-eslint": "^8.46.3",
     "typescript": "^5.9.3",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2"
