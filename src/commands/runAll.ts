@@ -1,28 +1,35 @@
 import * as vscode from "vscode";
 import { CommandFacade } from "../core/commandFacade";
 
-export function commandRemoveCommentsCommand() {
+export function commandRunAll() {
     return vscode.commands.registerCommand(
-        "comment-editor.removeComments",
-        () => {
+        "comment-editor.runAll",
+        async () => {
             const editor = vscode.window.activeTextEditor;
             if (!editor) return;
 
-            const document = editor.document;
-            const code = document.getText();
+            const language = editor.document.languageId;
+
+            const picked = await vscode.window.showQuickPick(
+                ["comments", "logs"],
+                { canPickMany: true, title: "Select filters to apply" }
+            );
+
+            if (!picked || picked.length === 0) return;
 
             const ctx = {
-                language: document.languageId,
-                rules: ["comments"]
+                language,
+                rules: picked
             };
 
+            const code = editor.document.getText();
             const output = CommandFacade.apply(code, ctx);
 
             editor.edit(editBuilder => {
                 const fullRange = new vscode.Range(
                     0,
                     0,
-                    document.lineCount,
+                    editor.document.lineCount,
                     0
                 );
                 editBuilder.replace(fullRange, output);

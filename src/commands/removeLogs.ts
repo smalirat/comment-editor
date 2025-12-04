@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
 import { CommandFacade } from "../core/commandFacade";
 
-export function commandRemoveCommentsCommand() {
+export function commandRemoveLogsCommand() {
     return vscode.commands.registerCommand(
-        "comment-editor.removeComments",
+        "comment-editor.removeLogs",
         () => {
             const editor = vscode.window.activeTextEditor;
             if (!editor) return;
@@ -13,7 +13,7 @@ export function commandRemoveCommentsCommand() {
 
             const ctx = {
                 language: document.languageId,
-                rules: ["comments"]
+                rules: ["logs"]
             };
 
             const output = CommandFacade.apply(code, ctx);

@@ -2,11 +2,17 @@
   "name": "comment-editor",
   "displayName": "Comment Editor",
   "description": "Remove comments from code using language-aware filters.",
-  "version": "1.0.0",
-  "publisher": "your-name",
+  "version": "1.2.0",
+  "publisher": "smalirat",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smalirat/comment-editor.git"
+  },
+  "license": "MIT",
   "engines": {
     "vscode": "^1.106.1"
   },
+
   "categories": [
     "Other"
   ],
@@ -14,12 +20,11 @@
     "onCommand:comment-editor.removeComments"
   ],
   "main": "./out/extension.js",
-  "contributes": {
+   "contributes": {
     "commands": [
-      {
-        "command": "comment-editor.removeComments",
-        "title": "Remove Comments"
-      }
+      { "command": "comment-editor.runAll", "title": "Run All Filters" },
+      { "command": "comment-editor.cleanComments", "title": "Remove Comments" },
+      { "command": "comment-editor.cleanLogs", "title": "Remove Logs" }
     ]
   },
   "scripts": {

@@ -1,31 +1,58 @@
-import * as assert from 'assert';
-import * as vscode from 'vscode';
+import * as assert from "assert";
+import { CommandFacade } from "../../src/core/commandFacade";
+import { FilterContext } from "../../src/core/ruleTypes";
 
-suite('Remove Comments Command Tests', () => {
+suite("Commands Tests", () => {
 
-    test('Should remove comments in a JavaScript document', async () => {
-        const doc = await vscode.workspace.openTextDocument({
-            content: `
-                // comentario 1
-                const x = 10; // comentario inline
-                /* bloque */
-                const y = 20;
-            `,
-            language: 'javascript'
-        });
+    test("Remove comments", () => {
+        const code = `
+            // comment
+            const x = 10; /* inline */
+        `;
 
-        await vscode.window.showTextDocument(doc);
+        const ctx: FilterContext = {
+            language: "javascript",
+            rules: ["comments"]
+        };
 
-        await vscode.commands.executeCommand('comment-editor.removeComments');
+        const result = CommandFacade.apply(code, ctx);
 
-        const updatedText = doc.getText();
+        assert.ok(!result.includes("// comment"), "Single-line comment not removed");
+        assert.ok(!result.includes("/* inline */"), "Multi-line comment not removed");
+    });
 
-        assert.ok(!updatedText.includes('// comentario'));
-        assert.ok(!updatedText.includes('/*'));
-        assert.ok(!updatedText.includes('*/'));
+    test("Remove logs", () => {
+        const code = `
+            console.log("debug");
+            const x = 5;
+        `;
 
-        assert.ok(updatedText.includes('const x = 10'));
-        assert.ok(updatedText.includes('const y = 20'));
+        const ctx: FilterContext = {
+            language: "javascript",
+            rules: ["logs"]
+        };
+
+        const result = CommandFacade.apply(code, ctx);
+
+        assert.ok(!result.includes("console.log"), "Log not removed");
+    });
+
+    test("Run All Filters", () => {
+        const code = `
+            // comment
+            console.log("debug");
+            const x = 20;
+        `;
+
+        const ctx: FilterContext = {
+            language: "javascript",
+            rules: ["comments", "logs"]
+        };
+
+        const result = CommandFacade.apply(code, ctx);
+
+        assert.ok(!result.includes("// comment"), "Comment not removed");
+        assert.ok(!result.includes("console.log"), "Log not removed");
     });
 
 });
