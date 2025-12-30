@@ -1,0 +1,62 @@
+{
+  "name": "comment-editor",
+  "displayName": "Comment Editor",
+  "description": "Remove comments from code using language-aware filters.",
+  "version": "1.0.0",
+  "publisher": "smalirat",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smalirat/comment-editor.git"
+  },
+  "license": "MIT",
+
+  "engines": {
+    "vscode": "^1.106.1"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "commentEditor.showMenu",
+        "title": "Comment Editor: Show Menu"
+      },
+      {
+        "command": "commentEditor.cleanComments",
+        "title": "Comment Editor: Remove Comments"
+      },
+      {
+        "command": "commentEditor.cleanLogs",
+        "title": "Comment Editor: Remove Logs"
+      },
+      {
+        "command": "commentEditor.cleanTODOs",
+        "title": "Comment Editor: Remove TODOs"
+      },
+      {
+        "command": "commentEditor.cleanEmojis",
+        "title": "Comment Editor: Remove Emojis"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.106.1",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "mocha": "^10.4.0",
+    "typescript": "^5.9.3",
+    "eslint": "^9.39.1",
+    "typescript-eslint": "^8.46.3"
+  }
+}
